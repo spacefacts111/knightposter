@@ -16,7 +16,7 @@ RESOLUTION = (1080, 1920)
 FONT_SIZE = 80
 FONT_COLOR = "white"
 
-# Instagram login (use session.json or login once manually)
+# Instagram login
 USERNAME = "YOUR_IG_USERNAME"
 PASSWORD = "YOUR_IG_PASSWORD"
 
@@ -46,24 +46,31 @@ def get_fallback_audio():
     return os.path.join(FALLBACK_DIR, "fallback_ambient.wav")
 
 # ====== SCHEDULER ======
-def create_new_schedule(today):
+def create_new_schedule(today, first_run=False):
     posts_today = random.randint(1, 3)
-    times = sorted([random.randint(9*60, 23*60) for _ in range(posts_today)])  # minutes in day
+    times = sorted([random.randint(9*60, 23*60) for _ in range(posts_today)])
     schedule = [f"{t//60:02d}:{t%60:02d}" for t in times]
-    data = {"date": today, "schedule": schedule, "done": []}
+
+    if first_run:
+        immediate_time = datetime.datetime.now().strftime("%H:%M")
+        data = {"date": today, "schedule": schedule, "done": [immediate_time]}
+        print(f"✅ First run: Posting immediately, rest scheduled for today: {schedule}")
+    else:
+        data = {"date": today, "schedule": schedule, "done": []}
+        print(f"✅ New schedule for today: {schedule}")
+
     with open(LAST_POST_FILE, "w") as f:
         json.dump(data, f)
-    print(f"✅ New schedule for today: {schedule}")
     return data
 
 def load_schedule():
     today = datetime.date.today().isoformat()
     if not os.path.exists(LAST_POST_FILE):
-        return create_new_schedule(today)
+        return create_new_schedule(today, first_run=True)
     with open(LAST_POST_FILE, "r") as f:
         data = json.load(f)
     if data.get("date") != today:
-        return create_new_schedule(today)
+        return create_new_schedule(today, first_run=True)
     return data
 
 def save_done_time(time_str):
@@ -81,7 +88,7 @@ def should_post_now():
         return True
     return False
 
-# ====== GENERATION (Replace these with your AI functions) ======
+# ====== GENERATION (Replace with your AI functions) ======
 def generate_image():
     try:
         # <<< Your AI image generation code >>>
@@ -148,8 +155,14 @@ def run_bot():
 
 # ====== MAIN ======
 if __name__ == "__main__":
-    if should_post_now():
+    schedule = load_schedule()
+    now = datetime.datetime.now().strftime("%H:%M")
+
+    # Immediate test post if first run of the day
+    if now not in schedule["done"] and schedule["done"]:
+        run_bot()
+        save_done_time(now)
+    elif should_post_now():
         run_bot()
     else:
         print("✅ Not time yet. Waiting for next scheduled slot.")
-# FULL FIXED MAIN.PY WILL BE WRITTEN HERE
