@@ -1,4 +1,5 @@
 from instagrapi import Client
+
 cl = Client()
-cl.login("knightinblindingarmour_", "Joker800000")
+cl.login("YOUR_USERNAME", "YOUR_PASSWORD")
 cl.dump_settings("session.json")
