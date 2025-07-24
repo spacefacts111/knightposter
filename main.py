@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw, ImageFont
 from gpt4all import GPT4All
 
 # ===== CONFIG =====
-SESSION_FILE = "session.json"  # Must contain {"sessionid": "YOUR_SESSION_ID"}
+SESSION_FILE = "session.json"  # Must be a full settings export (dump_settings)
 CAPTIONS_MODEL = "ggml-gpt4all-j-v1.3-groovy.bin"
 QUOTES_FILE = "quotes.json"
 VIDEO_OUTPUT = "final_video.mp4"
@@ -67,21 +67,19 @@ def create_video():
     ])
     print("✅ Video created successfully.")
 
-# ===== INSTAGRAM POSTING (COOKIES METHOD) =====
+# ===== INSTAGRAM POSTING (COOKIES SESSION) =====
 def upload_instagram_reel(video_path, caption):
     try:
         from instagrapi import Client
-
-        # Load session ID from session.json
-        with open(SESSION_FILE, "r") as f:
-            session_data = json.load(f)
-
-        sessionid = session_data.get("sessionid")
-        if not sessionid:
-            raise Exception("No sessionid found in session.json!")
-
         cl = Client()
-        cl.login_by_sessionid(sessionid)
+
+        if os.path.exists(SESSION_FILE):
+            cl.load_settings(SESSION_FILE)
+            cl.get_timeline_feed()  # Refreshes session, bypasses pinned_channels bug
+            print("✅ Logged in using saved session.")
+        else:
+            raise Exception("❌ session.json not found or invalid!")
+
         cl.clip_upload(video_path, caption)
         print("✅ Posted to Instagram successfully!")
     except Exception as e:
