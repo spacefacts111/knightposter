@@ -1,0 +1,37 @@
+{
+    "uuids": {
+        "phone_id": "1b27f169-3fad-4691-b22a-3dc8466ba22f",
+        "uuid": "fb931f75-4726-4756-a48c-d698869b9a40",
+        "client_session_id": "d5f76bf6-e9b4-4588-80cc-587cf5bfc14b",
+        "advertising_id": "f50317e5-951b-4c73-a9d8-dd05d678ec4d",
+        "android_device_id": "android-842c6520a0fc52a4",
+        "request_id": "065dc261-80bb-4292-9cb2-913a3b94b51b",
+        "tray_session_id": "e9d58c4e-013d-4c99-8c3e-6219ab8a6632"
+    },
+    "mid": "aIJv8gABAAHGkW7Axmuopve5wgaQ",
+    "ig_u_rur": null,
+    "ig_www_claim": null,
+    "authorization_data": {
+        "ds_user_id": "76130132695",
+        "sessionid": "76130132695%3A3z1eCSCmUM9y4m%3A22%3AAYeCvpLlmIw6_LtZ07a1rER5BZtiLElbpbgLAoa55w"
+    },
+    "cookies": {},
+    "last_login": 1753378867.1909053,
+    "device_settings": {
+        "app_version": "269.0.0.18.75",
+        "android_version": 26,
+        "android_release": "8.0.0",
+        "dpi": "480dpi",
+        "resolution": "1080x1920",
+        "manufacturer": "OnePlus",
+        "device": "devitron",
+        "model": "6T Dev",
+        "cpu": "qcom",
+        "version_code": "314665256"
+    },
+    "user_agent": "Instagram 269.0.0.18.75 Android (26/8.0.0; 480dpi; 1080x1920; OnePlus; 6T Dev; devitron; qcom; en_US; 314665256)",
+    "country": "US",
+    "country_code": 1,
+    "locale": "en_US",
+    "timezone_offset": -14400
+}
