@@ -3,6 +3,11 @@ import json
 import datetime
 import random
 import shutil
+import PIL
+# ✅ Pillow compatibility fix for MoviePy
+if not hasattr(PIL.Image, "ANTIALIAS"):
+    PIL.Image.ANTIALIAS = PIL.Image.Resampling.LANCZOS
+
 from moviepy.editor import ImageClip, AudioFileClip, CompositeVideoClip, TextClip
 import soundfile as sf
 from instagrapi import Client
