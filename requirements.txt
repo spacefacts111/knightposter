@@ -1,4 +1,6 @@
-instagrapi
-moviepy
-soundfile
-Pillow
+moviepy==1.0.3
+Pillow==10.3.0
+requests==2.31.0
+instagrapi==1.17.12
+gpt4all==2.8.0
+ffmpeg-python==0.2.0
