@@ -1,5 +1,4 @@
-Pillow
-requests
-gpt4all
-moviepy
 instagrapi
+moviepy
+soundfile
+Pillow
