@@ -7,7 +7,6 @@ from io import BytesIO
 from moviepy.editor import ImageClip, AudioFileClip, CompositeVideoClip, TextClip
 from instagrapi import Client
 from gpt4all import GPT4All
-import ffmpeg
 import time
 
 IMAGE_SAVE_PATH = "generated_image.jpg"
@@ -19,6 +18,19 @@ VIDEO_DURATION = 15
 RESOLUTION = (1080, 1920)
 CAPTIONS_MODEL = "gpt4all-falcon-newbpe-q4_0.gguf"
 FONT_PATH = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+
+# ✅ FIXED DEVICE SPOOFING (Keeps same fingerprint across redeploys)
+FIXED_DEVICE = {
+    "app_version": "290.0.0.28.176",
+    "android_version": 26,
+    "android_release": "8.0.0",
+    "dpi": "480dpi",
+    "resolution": "1080x1920",
+    "manufacturer": "Samsung",
+    "device": "SM-G973F",
+    "model": "samsungexynos9820",
+    "cpu": "samsungexynos9820",
+}
 
 def generate_image():
     print("🎨 Generating image...")
@@ -88,16 +100,23 @@ def create_video(image_path, music_path, caption):
 def upload_instagram_reel(video_path, caption):
     print("📤 Uploading to Instagram...")
     cl = Client()
+    cl.set_device(FIXED_DEVICE)  # ✅ Always spoof same device
+
+    # ✅ Stable session handling
     if os.path.exists(SESSION_FILE):
-        cl.load_settings(SESSION_FILE)
         try:
+            cl.load_settings(SESSION_FILE)
             cl.get_timeline_feed()
             print("✅ Logged in with saved session.")
         except:
+            print("⚠️ Session corrupted, regenerating...")
             os.remove(SESSION_FILE)
+
     if not os.path.exists(SESSION_FILE):
         cl.login("YOUR_USERNAME", "YOUR_PASSWORD")
         cl.dump_settings(SESSION_FILE)
+        print("✅ New session saved.")
+
     try:
         cl.clip_upload(video_path, caption)
         print("✅ Reel uploaded successfully!")
