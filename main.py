@@ -159,9 +159,9 @@ if __name__ == "__main__":
     now = datetime.datetime.now().strftime("%H:%M")
 
     # Immediate test post if first run of the day
-    if now not in schedule["done"] and schedule["done"]:
+    if schedule["done"] == [now]:
+        print("✅ First run today – posting test post now!")
         run_bot()
-        save_done_time(now)
     elif should_post_now():
         run_bot()
     else:
