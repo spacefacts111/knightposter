@@ -1,3 +1,4 @@
-{
-  "sessionid": "76130132695%3A0wmayb6oFF99l9%3A10%3AAYcSRf9DMWW7SHTsC0ATgw4iomGrsTK1aMeE3tLurg"
-}
+from instagrapi import Client
+cl = Client()
+cl.login("knightinblindingarmour_", "Joker800000")
+cl.dump_settings("session.json")
